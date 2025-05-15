@@ -1,0 +1,44 @@
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 10.0s
+ ✓ Checking validity of types    
+ ✓ Collecting page data    
+ ✓ Generating static pages (25/25)
+ ✓ Collecting build traces
+ ✓ Finalizing page optimization
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    1.69 kB         113 kB
+├ ○ /_not-found                            990 B         103 kB
+├ ƒ /admin                                104 kB         206 kB
+├ ƒ /admin/books                         2.38 kB         116 kB
+├ ƒ /admin/books/edit/[id]               4.35 kB         133 kB
+├ ƒ /admin/books/new                     4.08 kB         133 kB
+├ ƒ /admin/borrow                        2.19 kB         114 kB
+├ ƒ /admin/Users                         2.32 kB         122 kB
+├ ƒ /admin/Users/new                     1.02 kB         106 kB
+├ ƒ /api/admin/books                       180 B         102 kB
+├ ƒ /api/admin/books/[id]                  180 B         102 kB
+├ ƒ /api/admin/borrow                      180 B         102 kB
+├ ƒ /api/admin/users                       180 B         102 kB
+├ ƒ /api/auth/[...nextauth]                180 B         102 kB
+├ ƒ /api/auth/register                     180 B         102 kB
+├ ƒ /api/books                             180 B         102 kB
+├ ƒ /api/books/[id]                        180 B         102 kB
+├ ƒ /api/borrow                            180 B         102 kB
+├ ƒ /api/borrow/[bookId]                   180 B         102 kB
+├ ƒ /api/borrow/approve                    180 B         102 kB
+├ ƒ /api/recommendion                      180 B         102 kB
+├ ƒ /api/search                            180 B         102 kB
+├ ƒ /api/user-borrowed-books               180 B         102 kB
+├ ƒ /books/[id]                          4.25 kB         125 kB
+├ ○ /login                               2.65 kB         137 kB
+├ ƒ /profile                             7.99 kB         146 kB
+├ ○ /register                            5.69 kB         148 kB
+└ ○ /search                              3.02 kB         114 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/1684-c6a6db48eb882f56.js      46.4 kB
+  └ other shared chunks (total)          2.46 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
