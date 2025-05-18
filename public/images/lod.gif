@@ -1,0 +1,38 @@
+# Re-run after code session reset
+from PIL import Image, ImageSequence
+import numpy as np
+
+# Reload the original GIF
+input_path = "/mnt/data/original-1237f8be0f45e964a89d4eb473415288.gif"
+original_gif = Image.open(input_path)
+transparent_frames = []
+
+# Process each frame to remove the blue background
+for frame in ImageSequence.Iterator(original_gif):
+    rgba = frame.convert("RGBA")
+    data = np.array(rgba)
+
+    # Extract channels
+    r, g, b, a = data[..., 0], data[..., 1], data[..., 2], data[..., 3]
+
+    # Detect the blue background (#2A62F4 approx)
+    mask = (r > 40) & (r < 80) & (g > 90) & (g < 140) & (b > 240) & (b <= 255)
+
+    # Set alpha to 0 where the background is detected
+    data[mask] = [255, 255, 255, 0]
+
+    transparent_frame = Image.fromarray(data, mode="RGBA")
+    transparent_frames.append(transparent_frame)
+
+# Save the transparent GIF
+output_path = "/mnt/data/booky_loader_transparent.gif"
+transparent_frames[0].save(
+    output_path,
+    save_all=True,
+    append_images=transparent_frames[1:],
+    loop=0,
+    duration=original_gif.info.get('duration', 100),
+    disposal=2
+)
+
+output_path

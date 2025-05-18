@@ -22,12 +22,15 @@ const HeroBookCard = ({ book, isMobile, index }: HeroBookCardProps) => {
           coverColor={book.coverColor}
           variant={isMobile ? "regular" : "wide"}
           className="relative z-10"
+          priority
+          
         />
         <BookCover
           coverImage={book.image}
           coverColor={book.coverColor}
           variant={isMobile ? "regular" : "wide"}
           className="absolute left-[100px] rotate-[9.62deg] blur-[6px] opacity-60 "
+          priority
         />
       </div>
 

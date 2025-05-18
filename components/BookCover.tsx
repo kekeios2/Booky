@@ -29,6 +29,7 @@ const BookCover = ({
   coverColor = "",
   coverImage,
   priority = false,
+  
 }: Props) => {
   return (
     <div

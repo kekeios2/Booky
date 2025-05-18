@@ -68,7 +68,7 @@ export const BookCard = ({
               <div className="mt-2 space-y-1 text-sm">
                 <div className="flex items-center gap-2 text-blue-200">
                   <MdMenuBook size={18} className="text-[#85817cb9]" />
-                  Borrowed on{" "}
+                  Borrowed on
                   {borrowedDate.toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",

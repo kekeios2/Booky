@@ -6,8 +6,9 @@ import { useSession } from "next-auth/react";
 import { CiLogout } from "react-icons/ci";
 import { IoMenu } from "react-icons/io5";
 import { RxExitFullScreen } from "react-icons/rx";
-import { useState } from "react";
+import {  useState } from "react";
 import { signOut } from "next-auth/react";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState<false | "mobile" | "logout">(false);
@@ -60,9 +61,11 @@ export default function Navbar() {
               >
                 Search
               </Link>
-
+              <div></div>
               {user ? (
                 <div className="flex items-center gap-4">
+                  <NotificationBell />
+
                   <Link
                     href="/profile"
                     className="flex items-center gap-2 hover:opacity-80"

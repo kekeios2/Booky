@@ -13,16 +13,19 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "example.com",
-      },
-      // Optional: Add more specific patterns
-      {
-        protocol: "https",
         hostname: "ik.imagekit.io",
-        pathname: "/xt6hfeibgz/**",
+        pathname: "/xt6hfeibgz/**", // مثال على فلترة دقيقة للصورة
       },
     ],
   },
+
+  compress: true, // ✅ ضغط استجابات HTML و JS
+  experimental: {
+    optimizePackageImports: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'], // ✅ يقلل unused JS في الباندل
+  },
+
+  // optional: لمنع تحميل polyfills غير ضرورية
+  // modern: true, ← (هذا الخيار أُزيل من Next.js 13+)
 };
 
 export default nextConfig;

@@ -82,7 +82,6 @@ export default function ProfileCard() {
                 <div>
                   <p className="text-gray-400 text-xs">Email </p>
                   <p className="text-white text-sm">
-                    {" "}
                     {session?.user?.email || "contact@jsmastery.pro"}
                   </p>
                 </div>

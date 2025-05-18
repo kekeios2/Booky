@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import HeroCarousel from "@/components/Hero/HeroCarousel";
 import HeroSkeleton from "@/components/Hero/HeroSekeleton";

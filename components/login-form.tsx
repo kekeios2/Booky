@@ -15,7 +15,7 @@ const loginSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters" }),
 });
 
-export function LoginForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -243,7 +243,6 @@ export function LoginForm() {
             href="/register"
             className="text-[#97846d] hover:text-[#6e604f]"
           >
-            {" "}
             Register here
           </Link>
         </p>

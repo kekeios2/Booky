@@ -65,8 +65,8 @@ export default function BorrowApprovedEmail({
           <Heading style={h1}>You did it! ✅</Heading>
 
           <Text style={text}>
-            Hey <strong>{userName}</strong>! Great news — your request to borrow{" "}
-            <strong>{bookTitle}</strong> has been{" "}
+            Hey <strong>{userName}</strong>! Great news — your request to borrow
+            <strong>{bookTitle}</strong> has been
             <span style={{ color: "#10B981" }}>approved</span>! 🎉
           </Text>
 

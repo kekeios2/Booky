@@ -42,3 +42,60 @@ Route (app)                                 Size  First Load JS
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
+; =================================================================
+
+  Creating an optimized production build ...
+ ✓ Compiled successfully in 13.0s
+ ✓ Checking validity of types    
+ ✓ Collecting page data    
+ ✓ Generating static pages (34/34)
+ ✓ Collecting build traces    
+ ✓ Finalizing page optimization
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     1.7 kB         113 kB
+├ ○ /_not-found                            208 B         102 kB
+├ ƒ /admin                                104 kB         206 kB
+├ ƒ /admin/books                         2.38 kB         116 kB
+├ ƒ /admin/books/edit/[id]               4.35 kB         133 kB
+├ ƒ /admin/books/new                      4.1 kB         133 kB
+├ ƒ /admin/borrow                        1.76 kB         114 kB
+├ ƒ /admin/Users                         2.32 kB         122 kB
+├ ƒ /admin/Users/new                     1.02 kB         106 kB
+├ ƒ /api/admin/books                       208 B         102 kB
+├ ƒ /api/admin/books/[id]                  208 B         102 kB
+├ ƒ /api/admin/borrow                      208 B         102 kB
+├ ƒ /api/admin/users                       208 B         102 kB
+├ ƒ /api/auth/[...nextauth]                208 B         102 kB
+├ ƒ /api/auth/activate                     208 B         102 kB
+├ ƒ /api/auth/register                     208 B         102 kB
+├ ƒ /api/auth/resend-verification          208 B         102 kB
+├ ƒ /api/auth/verify                       208 B         102 kB
+├ ƒ /api/books                             208 B         102 kB
+├ ƒ /api/books/[id]                        208 B         102 kB
+├ ƒ /api/borrow                            208 B         102 kB
+├ ƒ /api/borrow/approve                    208 B         102 kB
+├ ƒ /api/borrow/return/[bookId]            208 B         102 kB
+├ ƒ /api/notifications                     208 B         102 kB
+├ ƒ /api/notifications/[id]                208 B         102 kB
+├ ƒ /api/notifications/read                208 B         102 kB
+├ ƒ /api/recommendion                      208 B         102 kB
+├ ƒ /api/resend-verification               208 B         102 kB
+├ ƒ /api/search                            208 B         102 kB
+├ ƒ /api/send-email                        208 B         102 kB
+├ ƒ /api/user-borrowed-books               208 B         102 kB
+├ ƒ /books/[id]                          4.26 kB         125 kB
+├ ○ /checkEmail                          2.39 kB         105 kB
+├ ○ /login                               2.77 kB         137 kB
+├ ƒ /profile                             9.05 kB         148 kB
+├ ○ /register                             5.7 kB         148 kB
+├ ○ /search                              3.02 kB         114 kB
+└ ○ /verify                              1.72 kB         104 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/1684-2c9567da4b344cdd.js      46.4 kB
+  ├ chunks/4bd1b696-4519186cf632f502.js  53.2 kB
+  └ other shared chunks (total)          2.43 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

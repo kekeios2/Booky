@@ -1,7 +1,11 @@
-// app/login/page.tsx
-import { Suspense } from "react";
-import { LoginForm } from "@/components/login-form";
+"use client";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import Loading from "@/app/loading";
+
+const LoginForm = dynamic(() => import("@/components/login-form"), {
+  loading: () => <Loading />,
+});
 
 export default function LoginPage() {
   return (
@@ -10,9 +14,7 @@ export default function LoginPage() {
         {/* Login Form Side - 50% width */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
           <div className="w-full max-w-md">
-            <Suspense fallback={<div className="text-white">Loading...</div>}>
-              <LoginForm />
-            </Suspense>
+            <LoginForm />
           </div>
         </div>
 

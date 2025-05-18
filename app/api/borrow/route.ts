@@ -1,13 +1,16 @@
-// /app/api/borrow/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
-    return NextResponse.json({ error: "You have to Sign in First !!" }, { status: 401 });
+    return NextResponse.json(
+      { error: "You have to Sign in First !!" },
+      { status: 401 }
+    );
   }
 
   const { bookId } = await req.json();
@@ -21,7 +24,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // ✅ Check if already borrowed this book
     const alreadyBorrowed = await prisma.borrow.findFirst({
       where: {
         userId: user.id,
@@ -36,7 +38,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Create borrow record
+    // 🟡 جلب اسم الكتاب
+    const book = await prisma.book.findUnique({
+      where: { id: Number(bookId) },
+    });
+
+    if (!book) {
+      return NextResponse.json({ error: "Book not found." }, { status: 404 });
+    }
+
+    // 🟢 إنشاء الطلب
     await prisma.borrow.create({
       data: {
         userId: user.id,
@@ -44,6 +55,13 @@ export async function POST(req: NextRequest) {
         status: "PENDING",
       },
     });
+
+    // 🟢 إرسال الإشعار مع اسم الكتاب
+    await createNotification(
+      user.id,
+      "Book Borrow Request",
+      `Your request to borrow "${book.title}" has been sent to the admin.`
+    );
 
     return NextResponse.json({ message: "Borrow request sent for approval." });
   } catch (error) {

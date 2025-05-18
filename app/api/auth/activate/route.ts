@@ -1,6 +1,7 @@
 // app\api\auth\activate\route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
       where: { id: record.userId },
       data: { activated: true },
     });
+    await createNotification(record.userId, "Account Activated", "Your account has been successfully activated.");
 
     // حذف التوكن بعد التفعيل (اختياري)
     await prisma.activateToken.delete({
