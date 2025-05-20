@@ -4,6 +4,22 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+type BorrowWithBook = {
+  borrowedAt: Date;
+  book: {
+    id: number;
+    title: string;
+    author: string;
+    category: string;
+    description: string;
+    image: string;
+    rating: number;
+    coverColor: string;
+    summary: string;
+    pdfUrl?: string | null;
+    createdAt: Date;
+  };
+};
 
 export async function GET() {
   try {
@@ -28,10 +44,11 @@ export async function GET() {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const books = user.borrows.map((borrow) => ({
+    const books = user.borrows.map((borrow: BorrowWithBook) => ({
       ...borrow.book,
       borrowedAt: borrow.borrowedAt,
     }));
+    
 
     return NextResponse.json({ books }, { status: 200 });
   } catch (err) {
