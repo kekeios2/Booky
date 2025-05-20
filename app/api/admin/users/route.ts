@@ -1,11 +1,25 @@
-// app/api/admin/users/route.ts
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // حسب مسار lib/prisma.ts
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
-// Get all users
-// app/api/admin/users/route.ts
+// نوع المستخدم مع عدّاد الاستعارات
+type UserWithCount = {
+  id: string;
+  email: string | null;
+  fullName: string | null;
+  image: string | null;
+  role: string;
+  activated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  univId: number | null;
+  _count: {
+    borrows: number;
+  };
+};
+
+// ✅ Get all users
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
@@ -16,7 +30,7 @@ export async function GET() {
       },
     });
 
-    const result = users.map((user) => ({
+    const result = users.map((user: UserWithCount) => ({
       ...user,
       borrows: user._count.borrows,
     }));
@@ -30,13 +44,12 @@ export async function GET() {
     );
   }
 }
-// Update user role
+
+// ✅ Update user role
 export async function PATCH(request: Request) {
   try {
-    // Get session for authentication
     const session = await getServerSession(authOptions);
 
-    // Check if user is authenticated and has admin role
     if (!session || session.user?.role !== "Admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -51,9 +64,8 @@ export async function PATCH(request: Request) {
       );
     }
 
-    // Update user role
     const updatedUser = await prisma.user.update({
-      where: { id: id },
+      where: { id },
       data: { role },
       select: {
         id: true,
@@ -73,13 +85,11 @@ export async function PATCH(request: Request) {
   }
 }
 
-// Delete user
+// ✅ Delete user
 export async function DELETE(request: Request) {
   try {
-    // Get session for authentication
     const session = await getServerSession(authOptions);
 
-    // Check if user is authenticated and has admin role
     if (!session || session.user?.role !== "Admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -94,9 +104,8 @@ export async function DELETE(request: Request) {
       );
     }
 
-    // Delete user
     await prisma.user.delete({
-      where: { id: id },
+      where: { id },
     });
 
     return NextResponse.json(
