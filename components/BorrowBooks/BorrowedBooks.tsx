@@ -111,7 +111,7 @@ const BorrowedBooks = () => {
           width={200}
           height={200}
           alt="noBooks"
-          src={"/images/Mask.png"}
+          src={"https://ik.imagekit.io/xt6hfeibgz/Ui-Images/Mask.png"}
         ></Image>
         <h3 className="text-2xl text-gray-400 font-semibold my-4">
           Nothing to Read?

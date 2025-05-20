@@ -14,7 +14,7 @@ export default function ProfileCard() {
             className=" relative justify-self-center top-[-40px]"
             width={50}
             height={80}
-            src="/images/pin.png"
+            src="https://ik.imagekit.io/xt6hfeibgz/Ui-Images/pin.png"
             alt="pin"
           />
         </div>
@@ -23,7 +23,7 @@ export default function ProfileCard() {
           <div className="flex items-center gap-4 mb-10">
             <div className="w-[100px] h-[100px] rounded-[50px] overflow-hidden bg-[#28283a] p-1">
               <Image
-                src={session?.user?.image || "/images/noUser.png"}
+                src={session?.user?.image || "https://ik.imagekit.io/xt6hfeibgz/Ui-Images/noUser.png"}
                 alt="Profile"
                 width={80}
                 height={80}
@@ -36,7 +36,7 @@ export default function ProfileCard() {
                 <Image
                   width={18}
                   height={18}
-                  src="/images/Vector.png"
+                  src="https://ik.imagekit.io/xt6hfeibgz/Ui-Images/Vector.png"
                   alt="Verified"
                 />
                 <span className="text-gray-300 text-xs text-[14px]">

@@ -4,7 +4,7 @@ const noBookFound = () => {
   return (
     <div className="text-center py-16">
       <Image
-        src="/images/Mask.png"
+        src="https://ik.imagekit.io/xt6hfeibgz/Ui-Images/Mask.png"
         alt="No results found"
         width={200}
         height={200}

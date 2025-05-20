@@ -39,7 +39,7 @@ export default function BorrowBtn({ bookId, isBorrowed = false }: BorrowBtnProps
       onClick={handleClick}
     >
       <Image
-        src="/images/Blacklogo.svg"
+        src="https://ik.imagekit.io/xt6hfeibgz/Ui-Images/BlackLogo.svg?updatedAt=1747785332406"
         alt="logo"
         width={20}
         height={20}

@@ -18,15 +18,7 @@ export default function NotFound({ status = 404 }: { status?: number }) {
       </Link>
 
       {/* صورة الخطأ */}
-      <div className="w-44 h-44 sm:w-56 sm:h-56 mb-6 relative">
-        <Image
-          src="/images/404-book-illustration.png"
-          alt="Error Illustration"
-          fill
-          className="object-contain"
-          priority
-        />
-      </div>
+
 
       {/* رمز الخطأ */}
       <h1 className="text-6xl sm:text-7xl font-extrabold text-white drop-shadow mb-3">
