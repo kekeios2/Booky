@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+type ActivityGroup = {
+  borrowedAt: Date;
+  _count: {
+    _all: number;
+  };
+};
+
 export async function GET() {
   try {
     const totalUsers = await prisma.user.count();
@@ -29,7 +36,7 @@ export async function GET() {
       orderBy: { borrowedAt: "asc" },
     });
 
-    const chartData = activity.map((item) => ({
+    const chartData = activity.map((item: ActivityGroup) => ({
       date: new Date(item.borrowedAt).toLocaleDateString("en-EG"),
       count: item._count._all,
     }));
