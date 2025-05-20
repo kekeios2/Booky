@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Book, User } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -28,8 +27,8 @@ export async function GET(req: NextRequest) {
     take: 5,
   });
 
-  const userResults = users.map((u:User) => ({ ...u, type: "user" }));
-  const bookResults = books.map((b :Book) => ({ ...b, type: "book" }));
+  const userResults = users.map((u:any) => ({ ...u, type: "user" }));
+  const bookResults = books.map((b :any) => ({ ...b, type: "book" }));
 
   return NextResponse.json([...userResults, ...bookResults]);
 }
