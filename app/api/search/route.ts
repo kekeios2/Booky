@@ -1,27 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// ✅ نوع المستخدم مع type
-type UserResult = {
-  id: string;
-  email: string | null;
-  fullName: string | null;
-  image: string | null;
-  type: "user";
-};
-
-// ✅ نوع الكتاب مع type
-type BookResult = {
-  id: number;
-  title: string;
-  author: string;
-  description: string;
-  image: string;
-  category: string;
-  rating: number;
-  coverColor: string;
-  type: "book";
-};
+import { Book, User } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -49,25 +28,8 @@ export async function GET(req: NextRequest) {
     take: 5,
   });
 
-  const userResults: UserResult[] = users.map((u): UserResult => ({
-    id: u.id,
-    email: u.email,
-    fullName: u.fullName,
-    image: u.image,
-    type: "user",
-  }));
-
-  const bookResults: BookResult[] = books.map((b): BookResult => ({
-    id: b.id,
-    title: b.title,
-    author: b.author,
-    description: b.description,
-    image: b.image,
-    category: b.category,
-    rating: b.rating,
-    coverColor: b.coverColor,
-    type: "book",
-  }));
+  const userResults = users.map((u:User) => ({ ...u, type: "user" }));
+  const bookResults = books.map((b :Book) => ({ ...b, type: "book" }));
 
   return NextResponse.json([...userResults, ...bookResults]);
 }
