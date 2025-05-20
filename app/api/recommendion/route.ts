@@ -1,8 +1,19 @@
-// app\api\recommendion\route.ts
 import { NextResponse } from "next/server";
 import { generateEmbedding } from "@/lib/embedding";
 import { cosineSimilarity } from "@/lib/similarity";
 import { prisma } from "@/lib/prisma";
+
+// ✅ نوع مبسط للكتاب (يُستخدم في map)
+type BookLite = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  author: string;
+  rating: number;
+  coverColor: string;
+};
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -13,7 +24,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Invalid book ID" }, { status: 400 });
   }
 
-  // جلب الكتاب الهدف
+  // 🔍 جلب الكتاب الهدف
   const target = await prisma.book.findUnique({
     where: { id },
   });
@@ -24,8 +35,8 @@ export async function GET(req: Request) {
 
   const targetEmbedding = await generateEmbedding(target.description);
 
-  // جلب جميع الكتب ما عدا الهدف
-  const allBooks = await prisma.book.findMany({
+  // 📚 جلب جميع الكتب (بدون الهدف)
+  const allBooks: BookLite[] = await prisma.book.findMany({
     where: {
       id: { not: id },
     },
@@ -41,16 +52,16 @@ export async function GET(req: Request) {
     },
   });
 
-  // حساب التشابه
+  // 🧠 حساب التشابه
   const results = await Promise.all(
-    allBooks.map(async (book) => {
+    allBooks.map(async (book: BookLite) => {
       const emb = await generateEmbedding(book.description);
       const score = cosineSimilarity(targetEmbedding, emb);
       return { book, score };
     })
   );
 
-  // ترتيب واختيار أفضل 5
+  // 🔝 ترتيب واختيار أفضل 6 توصيات
   const top = results
     .sort((a, b) => b.score - a.score)
     .slice(0, 6)
