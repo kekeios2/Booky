@@ -1,19 +1,14 @@
 import { prisma } from "@/lib/prisma";
+import { Account } from "@prisma/client"; // ✅ الاستيراد الصحيح للنوع
 
-/**
- * Handle user data after Google authentication
- * Call this function after successfully signing in with Google
- */
 export async function handleGoogleSignIn(email: string, profile: any) {
   try {
-    // Find the user by email
     const user = await prisma.user.findUnique({
       where: { email },
       include: { accounts: true },
     });
 
     if (user) {
-      // Ensure the user is activated
       if (!user.activated) {
         await prisma.user.update({
           where: { id: user.id },
@@ -21,7 +16,6 @@ export async function handleGoogleSignIn(email: string, profile: any) {
         });
       }
 
-      // Update user profile with Google info if needed
       if (!user.image || !user.fullName) {
         await prisma.user.update({
           where: { id: user.id },
@@ -32,7 +26,6 @@ export async function handleGoogleSignIn(email: string, profile: any) {
         });
       }
 
-      // Generate univId if it doesn't exist
       if (!user.univId) {
         await prisma.user.update({
           where: { id: user.id },
@@ -42,12 +35,11 @@ export async function handleGoogleSignIn(email: string, profile: any) {
         });
       }
 
-      // Check if Google account is already linked
+      // ✅ حل الخطأ باستخدام النوع الصحيح
       const hasGoogleAccount = user.accounts.some(
-        (acc) => acc.provider === "google"
+        (acc: Account) => acc.provider === "google"
       );
 
-      // If no Google account is linked, link it
       if (!hasGoogleAccount && profile.sub) {
         await prisma.account.create({
           data: {
