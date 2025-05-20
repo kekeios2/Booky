@@ -1,6 +1,6 @@
 // types.ts
 export interface Book {
-  id: string;
+  id: number;
   title: string;
   author: string;
   category: string;
@@ -11,4 +11,11 @@ export interface Book {
   coverColor?: string;
   borrowedAt?: string;
   pdfUrl?: string;
+}
+export interface Notification {
+  id: string;
+  title: string;
+  body?: string;
+  read: boolean;
+  createdAt: string; // إذا كنت تستخدمه في الفرز أو العرض الزمني
 }

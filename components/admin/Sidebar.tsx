@@ -37,10 +37,10 @@ export function Sidebar({ adminName, adminEmail }: SidebarProps) {
         <Link href="/admin" className={linkClasses("/admin")}>
           Home
         </Link>
-        <Link href="/admin/Users" className={linkClasses("/admin/Users")}>
+        <Link href="/admin/users/list" className={linkClasses("/admin/Users")}>
           All Users
         </Link>
-        <Link href="/admin/books" className={linkClasses("/admin/books")}>
+        <Link href="/admin/books/list" className={linkClasses("/admin/books")}>
           All Books
         </Link>
         <Link href="/admin/borrow" className={linkClasses("/admin/borrow")}>

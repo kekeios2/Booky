@@ -1,70 +1,35 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { toast } from "react-hot-toast";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FiXCircle } from "react-icons/fi";
+import { toast } from "sonner";
+import { FullBorrowRequest } from "@/types/dashboard";
 
-type BorrowRequest = {
-  id: number;
-  status: string;
-  createdAt: string;
-  borrowedAt:string;
-  user: {
-    id: number;
-    fullName: string;
-    email: string;
-    image: string | null;
-  };
-  book: {
-    id: number;
-    title: string;
-  };
-};
-
-export function BorrowRequestsTable() {
-  const [requests, setRequests] = useState<BorrowRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const res = await fetch("/api/admin/borrow");
-        const data = await res.json();
-        setRequests(data.requests);
-      } catch (err) {
-        toast.error("Failed to load borrow requests");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRequests();
-  }, []);
-
+export default function BorrowRequestsTable({
+  data,
+  onApprove,
+}: {
+  data: FullBorrowRequest[];
+  onApprove?: (id: number) => void;
+}) {
   const handleAction = async (id: number, action: "APPROVED" | "REJECTED") => {
     try {
       const res = await fetch("/api/borrow/approve", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ borrowId: id, action }),
       });
 
-      if (!res.ok) throw new Error("Failed to update request");
+      if (!res.ok) throw new Error("Failed");
 
-      setRequests((prev) => prev.filter((r) => r.id !== id));
       toast.success(`Request ${action.toLowerCase()} successfully`);
-    } catch (err) {
+      if (onApprove) onApprove(id);
+    } catch {
       toast.error("Failed to update request");
     }
   };
 
-  if (loading) return <p>Loading borrow requests...</p>;
-
-  if (requests.length === 0)
+  if (data.length === 0)
     return <p className="text-gray-500">No pending borrow requests.</p>;
 
   return (
@@ -79,7 +44,7 @@ export function BorrowRequestsTable() {
           </tr>
         </thead>
         <tbody>
-          {requests.map((req) => (
+          {data.map((req) => (
             <tr key={req.id} className="border-b hover:bg-gray-50">
               <td className="p-2 flex items-center gap-2">
                 {req.user.image ? (

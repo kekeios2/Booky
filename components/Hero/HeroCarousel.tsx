@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import HeroBookCard from "@/components/Hero/HeroBookCard";
+import { Book } from "@/types/types";
 
 interface HeroCarouselProps {
-  books: any[];
+  books: Book[];
   isMobile: boolean;
 }
 

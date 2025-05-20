@@ -1,29 +1,32 @@
 "use client";
 
-import { toast } from "sonner";
 import React from "react";
+import { toast } from "sonner";
 
 interface ReturnButtonProps {
-  bookId: string;
+  bookId: number;
   onSuccess?: () => void;
 }
 
-const ReturnButton: React.FC<ReturnButtonProps> = ({ bookId, onSuccess }) => {
+const ReturnButton = ({ bookId, onSuccess }: ReturnButtonProps) => {
   const handleReturn = async () => {
     try {
       const res = await fetch(`/api/borrow/return/${bookId}`, {
         method: "POST",
       });
+
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success("Book returned successfully!");
-        onSuccess?.();
-      } else {
-        toast.error(`${data.error}`);
+      if (!res.ok) {
+        toast.error(data?.error || "Failed to return book.");
+        return;
       }
-    } catch {
-      toast.error("Failed to return the book. Try again.");
+
+      toast.success("Book returned successfully!");
+      onSuccess?.();
+    } catch (err) {
+      toast.error("Unexpected error. Please try again.");
+      console.error("Return error:", err);
     }
   };
 

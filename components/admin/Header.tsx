@@ -6,10 +6,17 @@ import { useRouter } from "next/navigation";
 type SidebarProps = {
   adminName: string | undefined;
 };
+type SearchResult = {
+  id: string;
+  title?: string;
+  fullName?: string;
+  email?: string;
+  type: "book" | "user";
+};
 
 export function Header({ adminName }: SidebarProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,7 +63,7 @@ export function Header({ adminName }: SidebarProps) {
 
         {results.length > 0 && (
           <ul className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-md mt-2 z-50 max-h-60 overflow-y-auto text-sm">
-            {results.map((item) => (
+            {results.map((item: SearchResult) => (
               <li
                 key={item.id}
                 onClick={() => handleSelect(item)}

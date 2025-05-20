@@ -1,16 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Book } from "@/types/types";
 import useFetchBooks from "@/hooks/FetchingBorrow";
 import BookList from "@/components/BorrowBooks/BookList";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 // Dynamic import of PDFViewer components to avoid SSR issues
-const SimplePDFViewer = dynamic(() => import("@/components/MyPDFViewer"), {
-  ssr: false,
-  loading: () => <p className="text-center my-4">Initializing viewer...</p>,
-});
+const SimplePDFViewer = dynamic(
+  () => import("@/components/BorrowBooks/MyPDFViewer"),
+  {
+    ssr: false,
+    loading: () => <p className="text-center my-4">Initializing viewer...</p>,
+  }
+);
 
 const BorrowedBooks = () => {
   const { books, loading, error } = useFetchBooks();
@@ -19,6 +23,33 @@ const BorrowedBooks = () => {
   // State to track which PDF viewer to use
   const [viewerType, setViewerType] = useState<"simple" | "basic">("simple");
   const [viewerError, setViewerError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const navbar = document.getElementById("app-navbar");
+    if (!navbar) return;
+
+    if (isModalOpen) {
+      navbar.style.display = "none";
+    } else {
+      navbar.style.display = "";
+    }
+
+    return () => {
+      if (navbar) navbar.style.display = "";
+    };
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    // Check if there's an openBook parameter in the URL
+    const openBookId = searchParams.get("openBook");
+    if (openBookId && books.length > 0) {
+      // Find the book with the matching ID
+      const bookToOpen = books.find((book) => book.id === parseInt(openBookId));
+      if (bookToOpen) {
+        openModal(bookToOpen);
+      }
+    }
+  }, [books, searchParams]);
 
   const openModal = (book: Book) => {
     setSelectedBook(book);
@@ -30,6 +61,11 @@ const BorrowedBooks = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
+
+    // Remove the openBook parameter from the URL
+    const url = new URL(window.location.href);
+    url.searchParams.delete("openBook");
+    window.history.replaceState({}, "", url.toString());
   };
 
   if (loading) {
@@ -77,7 +113,9 @@ const BorrowedBooks = () => {
           alt="noBooks"
           src={"/images/Mask.png"}
         ></Image>
-        <h3 className="text-2xl font-semibold my-4">Nothing to Read?</h3>
+        <h3 className="text-2xl text-gray-400 font-semibold my-4">
+          Nothing to Read?
+        </h3>
         <p className="text-gray-500">Your shelf is empty, your soul is bored</p>
         <p className="text-gray-500">Fix both — go borrow a book.</p>
       </div>
@@ -89,9 +127,9 @@ const BorrowedBooks = () => {
       <BookList books={books} openModal={openModal} />
 
       {isModalOpen && selectedBook && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 p-4 overflow-auto">
-          <div className="bg-white rounded-lg relative w-full max-w-4xl max-h-full flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b">
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-[1000] p-4 ">
+          <div className="bg-white rounded-lg relative w-full max-w-4xl max-h-[90vh] flex flex-col my-8">
+            <div className="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-[1010]">
               <h3 className="text-lg font-medium text-gray-900 truncate">
                 {selectedBook.title}
               </h3>

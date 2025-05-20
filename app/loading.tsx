@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Loading() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#121222] text-white">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0e1525] text-white">
       <div className="flex items-center space-x-4 mb-4">
         <div className="animate-spin h-12 w-12 border-4 border-white border-t-transparent rounded-full"></div>
         <Image src="/images/logo.svg" alt="Booky Logo" width={32} height={32} />

@@ -1,29 +1,58 @@
 "use client";
-
-import Image from "next/image";
-import { toast } from "sonner";
 import BookCover from "@/components/BookCover";
 import { CiStar } from "react-icons/ci";
+import { Book } from "@/types/types";
+import { useEffect, useState } from "react";
+import SaveButton from "../BookDetail/saveBtn";
+import BorrowButton from "@/components/borrowBtn";
+import { useSession } from "next-auth/react";
 
 interface HeroBookCardProps {
-  book: any;
+  book: Book;
   isMobile: boolean;
   index: number;
 }
 
-const HeroBookCard = ({ book, isMobile, index }: HeroBookCardProps) => {
+const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
+  const [isBorrowed, setIsBorrowed] = useState(false);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session) return; // ⛔ Not signed in → skip fetch
+  
+    const checkIfBorrowed = async () => {
+      try {
+        const res = await fetch(`/api/borrow/check?bookId=${book.id}`, {
+          credentials: "include",
+        });
+  
+        if (!res.ok) {
+          console.error("Failed to check borrow status:", res.status);
+          return;
+        }
+  
+        const data = await res.json();
+        if (data?.borrowed) {
+          setIsBorrowed(true);
+        }
+      } catch (error) {
+        console.error("Error checking borrow status:", error);
+      }
+    };
+  
+    checkIfBorrowed();
+  }, [book.id, session]);
+  
   return (
     <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-16 w-full max-w-screen-xl mt-10">
       {/* Book Cover with reflection */}
-      <div className="w-full lg:w-2/5 relative h-64 md:h-80 lg:h-96 flex justify-center lg:justify-start mt-6 lg:mt-0">
-        {/* Main Book Cover */}
-        <BookCover
+      <div className="w-full lg:w-2/5 relative  md:h-96 lg:h-[28rem] flex justify-center lg:justify-start">
+      <BookCover
           coverImage={book.image}
           coverColor={book.coverColor}
           variant={isMobile ? "regular" : "wide"}
           className="relative z-10"
           priority
-          
         />
         <BookCover
           coverImage={book.image}
@@ -33,82 +62,58 @@ const HeroBookCard = ({ book, isMobile, index }: HeroBookCardProps) => {
           priority
         />
       </div>
-
+      
       {/* Book Info */}
-      <div className="w-full lg:w-3/5 space-y-4 text-center lg:text-left">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
-          {book.title}
-        </h1>
-
-        <div className="flex ">
-          <div className="flex text-primary ">
-            <p className="text-gray-300 italic text-sm md:text-base mr-1.5">
-              By
-            </p>
-            {book.author}
-          </div>
-          <div className="flex text-primary mx-6">
-            <p className="text-gray-300 italic text-sm md:text-base mr-1.5">
-              Category
-            </p>
-            {book.category}
-          </div>
-          <div className="flex items-center ">
+      <div className="w-full lg:w-3/5 space-y-5 text-center lg:text-left">
+        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-3 text-sm m-0">
+          <span className="bg-amber-300/30 text-[#c9af90] px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide">
+            Featured
+          </span>
+          <div className="flex items-center gap-1 text-yellow-400 text-sm">
             {[...Array(5)].map((_, i) => (
               <CiStar
                 key={i}
-                className={`w-5 h-5 ${
+                className={`w-4 h-4 ${
                   i < Math.floor(book.rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-400"
+                    ? "text-yellow-400"
+                    : "text-gray-500"
                 }`}
               />
             ))}
-            <span className=" text-primary">{book.rating}</span>
-            <span className="">/5</span>
+            <span className="text-gray-300 ml-1">{book.rating}/5</span>
           </div>
         </div>
-
-        {/* Book Description */}
-        <p className="text-gray-300 text-sm md:text-base max-w-2xl mx-auto lg:mx-0 min-h-[4.5rem]">
+        
+        <h1 className="text-white text-4xl md:text-5xl font-bold tracking-tight leading-snug">
+          {book.title}
+        </h1>
+        
+        <p className="text-gray-400 text-sm">
+          By
+          <span className="text-[#c9af90] font-medium hover:underline mx-1.5">
+            {book.author}
+          </span>
+          |
+          <span className="ml-2 bg-blue-600/20 text-blue-400 px-2 py-0.5 rounded-full text-xs">
+            {book.category}
+          </span>
+        </p>
+        
+        <p className="text-gray-300 text-base max-w-2xl mx-auto lg:mx-0 ">
           {book.description}
         </p>
-
-        <div className="bg-gray-800/50 p-3 md:p-4 rounded-lg">
-          <h3 className="text-white font-medium text-sm md:text-base mb-1 md:mb-2">
-            Summary:
-          </h3>
-          <p className="text-gray-300 text-xs md:text-sm line-clamp-4 md:line-clamp-none">
+        
+        <div className="bg-[#1c2540]/60 border border-gray-700/30 rounded-lg p-6">
+          <h3 className="text-white text-lg font-medium mb-3">Summary:</h3>
+          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
             {book.summary}
           </p>
         </div>
-
-        <button
-          className="flex w-fit mx-auto lg:mx-0 btn-primary text-black py-2 px-6 rounded-[5px] font-bold text-base tracking-wide transition-all duration-300 shadow-lg mt-4"
-          onClick={async (e) => {
-            e.preventDefault();
-            try {
-              const res = await fetch("/api/borrow", {
-                method: "POST",
-                body: JSON.stringify({ bookId: book.id }),
-                headers: { "Content-Type": "application/json" },
-              });
-              const data = await res.json();
-              res.ok ? toast.success(data.message) : toast.error(data.error);
-            } catch {
-              toast.error("Something went wrong. Try again.");
-            }
-          }}
-        >
-          <Image
-            src="/images/Blacklogo.svg"
-            alt="logo"
-            width={20}
-            height={20}
-            className="mr-2 "
-          />
-          Borrow The Book
-        </button>
+        <div className="flex justify-center lg:justify-start gap-4 pt-2">
+          
+          <BorrowButton bookId={book.id} isBorrowed={isBorrowed} />
+          <SaveButton bookId={book.id} />
+        </div>
       </div>
     </div>
   );

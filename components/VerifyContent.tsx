@@ -43,7 +43,7 @@ export default function VerifyContent() {
             router.push("/login?verified=true");
           }, 2000);
         }
-      } catch (error) {
+      } catch (_error) {
         setStatus("error");
         setMessage("An error occurred during verification. Please try again later.");
       }

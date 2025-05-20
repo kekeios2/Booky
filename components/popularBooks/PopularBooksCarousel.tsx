@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import PopularBookCard from "./PopularBookCard";
+import { Book } from "@/types/types";
 
 interface PopularBooksCarouselProps {
-  books: any[];
+  books: Book[];
 }
 
 const PopularBooksCarousel = ({ books }: PopularBooksCarouselProps) => {

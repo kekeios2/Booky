@@ -1,6 +1,9 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: {
     domains: [
       "ik.imagekit.io",
@@ -21,11 +24,16 @@ const nextConfig: NextConfig = {
 
   compress: true, // ✅ ضغط استجابات HTML و JS
   experimental: {
-    optimizePackageImports: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'], // ✅ يقلل unused JS في الباندل
+    optimizePackageImports: [
+      "@mui/material",
+      "@mui/icons-material",
+      "@emotion/react",
+      "@emotion/styled",
+    ], // ✅ يقلل unused JS في الباندل
   },
 
   // optional: لمنع تحميل polyfills غير ضرورية
   // modern: true, ← (هذا الخيار أُزيل من Next.js 13+)
 };
 
-export default nextConfig;
+module.exports = withBundleAnalyzer(nextConfig); // ⬅️ مهم

@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { RoleDropdown } from "./RoleDropdown";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { toast } from "react-hot-toast";
-import { LuTrash2 ,LuUserPen  } from "react-icons/lu";
+import { toast } from "sonner";
+import { LuTrash2 } from "react-icons/lu";
 
 // Define the User type
 type User = {
@@ -17,6 +17,7 @@ type User = {
   image: string;
   createdAt: string;
   updatedAt: string;
+  activated: boolean;
 };
 
 export function UserTable() {
@@ -36,6 +37,8 @@ export function UserTable() {
         }
 
         const data = await response.json();
+        console.log(data.users);
+
         setUsers(data.users);
       } catch (err: any) {
         setError(err.message || "An error occurred while fetching users");
@@ -104,7 +107,7 @@ export function UserTable() {
     try {
       const date = new Date(dateString);
       return formatDistanceToNow(date, { addSuffix: true });
-    } catch (err) {
+    } catch (_err) {
       return "Invalid date";
     }
   };
@@ -136,12 +139,11 @@ export function UserTable() {
           <tr>
             <th className="p-2">Profile</th>
             <th className="p-2">Name</th>
-            <th className="p-2">Date Joined</th>
-            <th className="p-2">Role</th>
-            <th className="p-2">Books Borrowed</th>
             <th className="p-2">University ID</th>
-            <th className="p-2">Created At</th>
-            <th className="p-2">Updated At</th>
+            <th className="p-2">Books Borrowed</th>
+            <th className="p-2">Role</th>
+            <th className="p-2">Verfiyed</th>
+            <th className="p-2">Date Joined</th>
             <th className="p-2">Action</th>
           </tr>
         </thead>
@@ -173,31 +175,36 @@ export function UserTable() {
                 <div className="font-medium">{user.fullName}</div>
                 <div className="text-xs text-gray-500">{user.email}</div>
               </td>
+              <td className="p-2">{user.univId}</td>
+              <td className="p-2">{user.borrows}</td>
 
-              <td className="p-2">{formatDate(user.createdAt)}</td>
               <td className="p-2">
                 <RoleDropdown
                   currentRole={user.role}
                   onChange={(role) => handleRoleChange(user.id, role)}
                 />
               </td>
-              <td className="p-2">{user.borrows}</td>
-              <td className="p-2">{user.univId}</td>
               <td className="p-2">
-                {new Date(user.createdAt).toLocaleDateString()}
+                {user.activated ? (
+                  <span className="text-[#008000] bg-[#00800040] px-2.5 py-1.5 rounded-full text-xs font-medium">
+                    Verified
+                  </span>
+                ) : (
+                  <span className="text-red-700 bg-red-100 px-2 py-1 rounded-full text-xs font-medium">
+                    Not Verified
+                  </span>
+                )}
               </td>
-              <td className="p-2">
-                {new Date(user.updatedAt).toLocaleDateString()}
-              </td>
+              <td className="p-2">{formatDate(user.createdAt)}</td>
+
               <td className="p-2 ">
                 <button
                   onClick={() => handleDelete(user.id)}
                   className="text-gray-500 hover:text-red-700 "
                   aria-label="Delete user"
                 >
-                  <LuTrash2 />
+                  <LuTrash2 size={20} />
                 </button>
-          
               </td>
             </tr>
           ))}

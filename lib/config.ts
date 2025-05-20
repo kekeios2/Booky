@@ -5,6 +5,7 @@ const config = {
       urlEndpoint: "https://ik.imagekit.io/xt6hfeibgz",
     },
   },
+  
 };
 
 export default config;

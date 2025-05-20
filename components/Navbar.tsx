@@ -6,9 +6,10 @@ import { useSession } from "next-auth/react";
 import { CiLogout } from "react-icons/ci";
 import { IoMenu } from "react-icons/io5";
 import { RxExitFullScreen } from "react-icons/rx";
-import {  useState } from "react";
+import { useState } from "react";
 import { signOut } from "next-auth/react";
 import NotificationBell from "./NotificationBell";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState<false | "mobile" | "logout">(false);
@@ -37,8 +38,8 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="w-full relative z-50">
-        <div className="py-4 shadow-md bg-[#121222]">
+      <header id="app-navbar" className="w-full relative z-50">
+        <div className="py-4 ">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <Link
               href="/"
@@ -61,7 +62,6 @@ export default function Navbar() {
               >
                 Search
               </Link>
-              <div></div>
               {user ? (
                 <div className="flex items-center gap-4">
                   <NotificationBell />
@@ -83,10 +83,14 @@ export default function Navbar() {
                   </button>
                 </div>
               ) : (
-                <Link href="/login">
-                  <button className="text-[#EED1AC] hover:text-orange-600 transition-colors">
+                <Link
+                  href="/login"
+                  className=" text-[#EED1AC] align-self-center  hover:text-orange-600"
+                >
+                  <div className=" flex transition-colors">
                     Login
-                  </button>
+                    <MdKeyboardArrowRight size={23} />
+                  </div>
                 </Link>
               )}
             </nav>
@@ -109,7 +113,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`sm:hidden absolute top-full left-0 w-full bg-[#121222] border-t border-gray-700 shadow-lg px-4 pt-4 transition-all duration-300 ease-in-out overflow-hidden z-40 ${
+          className={`sm:hidden absolute top-full left-0 w-full border-t border-gray-700 shadow-lg px-4 pt-4 transition-all duration-300 ease-in-out overflow-hidden z-40 ${
             menuOpen === "mobile"
               ? "max-h-[500px] opacity-100"
               : "max-h-0 opacity-0"
@@ -146,7 +150,7 @@ export default function Navbar() {
                 className="block text-white"
                 onClick={() => setMenuOpen(false)}
               >
-                Login
+                Login &gt;
               </Link>
             )}
           </div>

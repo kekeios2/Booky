@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { LuTrash2 ,LuUserPen  } from "react-icons/lu";
 
 import Link from "next/link";
@@ -67,7 +67,7 @@ export function BookTable() {
     try {
       const dateObj = typeof date === "string" ? new Date(date) : date;
       return formatDistanceToNow(dateObj, { addSuffix: true });
-    } catch (err) {
+    } catch (_err) {
       return "Invalid date";
     }
   };

@@ -1,4 +1,5 @@
 import React from "react";
+import { IoMdEye, IoIosEyeOff } from "react-icons/io";
 
 type Props = {
   formData: {
@@ -63,6 +64,7 @@ export default function RegisterFields({
         onChange={handleChange}
         showToggle
         onToggle={togglePassword}
+        isVisible={showPassword}
       />
 
       <Field
@@ -74,6 +76,7 @@ export default function RegisterFields({
         onChange={handleChange}
         showToggle
         onToggle={toggleConfirmPassword}
+        isVisible={showConfirmPassword}
       />
     </>
   );
@@ -88,6 +91,7 @@ function Field({
   onChange,
   showToggle = false,
   onToggle,
+  isVisible,
 }: {
   id: string;
   label: string;
@@ -97,6 +101,7 @@ function Field({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   showToggle?: boolean;
   onToggle?: () => void;
+  isVisible?: boolean;
 }) {
   return (
     <div>
@@ -121,7 +126,11 @@ function Field({
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             onClick={onToggle}
           >
-            👁️
+            {isVisible ? (
+              <IoIosEyeOff className="h-5 w-5 text-gray-400" />
+            ) : (
+              <IoMdEye className="h-5 w-5 text-gray-400" />
+            )}
           </button>
         )}
       </div>

@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const books = await prisma.book.findMany();
     return NextResponse.json({ books });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
@@ -75,7 +75,6 @@ export async function POST(req: Request) {
     }
 
     const formData = await req.formData();
-    const id = formData.get("id")?.toString();
     const title = formData.get("title")?.toString() || "";
     const author = formData.get("author")?.toString() || "";
     const category = formData.get("category")?.toString() || "";

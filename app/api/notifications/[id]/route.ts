@@ -1,38 +1,28 @@
-// app\api\notifications\[id]\route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-interface Context {
-  params: { id: string };
-}
-
-export async function DELETE(
-  request: NextRequest,
-  context: Context
-) {
-  const id = context.params.id;
-
-  // التحقق من صحة المعرف
-  if (!id || typeof id !== "string") {
-    return NextResponse.json({ error: "Invalid notification ID" }, { status: 400 });
+export async function POST(_req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  
 
-  try {
-    await prisma.notification.delete({
-      where: { id },
-    });
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
 
-    return NextResponse.json({ message: "Notification deleted successfully" });
-  } catch (error: any) {
-    console.error("❌ Delete error:", error);
-    
-    if (
-      error?.code === "P2025" || // Prisma error: Record not found
-      (error instanceof Error && error.message.includes("Record to delete"))
-    ) {
-      return NextResponse.json({ error: "Notification not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ error: "Failed to delete notification" }, { status: 500 });
+  if (!user) {
+    return NextResponse.json({ error: "User Not Found" }, { status: 404 });
   }
+  await prisma.notification.delete({
+    where: {
+      id: _req.url.split('/').pop(),
+      userId: user.id,
+    },
+  });
+
+  return NextResponse.json({ message: "All notifications deleted successfully." });
 }

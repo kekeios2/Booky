@@ -1,5 +1,5 @@
 // components/register/RegisterSocial.tsx
-import { LoginWithGoogle } from "@/components/LoginWithGoogle";
+import { LoginWithGoogle } from "@/components/auth/LoginWithGoogle";
 import Link from "next/link";
 
 export default function RegisterSocial() {

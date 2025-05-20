@@ -6,27 +6,39 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    const session = await getServerSession(authOptions);
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    include: {
-      borrows: {
-        where: { status: "APPROVED" },
-        orderBy: { borrowedAt: "desc" }, // تأكد من ترتيب الاستعارات
-        include: { book: true },
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      include: {
+        borrows: {
+          where: { status: "APPROVED" },
+          orderBy: { borrowedAt: "desc" },
+          include: { book: true },
+        },
       },
-    },
-  });
+    });
 
-  // دمج معلومات الاستعارة مع الكتاب
-  const books = user?.borrows.map((borrow) => ({
-    ...borrow.book,
-    borrowedAt: borrow.borrowedAt, 
-  }));
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-  return NextResponse.json({ books });
+    const books = user.borrows.map((borrow) => ({
+      ...borrow.book,
+      borrowedAt: borrow.borrowedAt,
+    }));
+
+    return NextResponse.json({ books }, { status: 200 });
+  } catch (err) {
+    console.error("❌ Fetch error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }

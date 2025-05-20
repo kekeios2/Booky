@@ -1,20 +1,19 @@
 "use client";
-
+import { Book } from "@/types/types";
 import dynamic from "next/dynamic";
-const Navbar = dynamic(() => import("@/components/Navbar"));
-const Footer = dynamic(() => import("@/components/Footer"));
 import HeroWrapper from "@/components/Hero/HeroWrapper";
+import NoiseBackground from "./NoiseBackground";
 const PopularBooksWrapper = dynamic(
   () => import("@/components/popularBooks/PopularBooksWrapper")
 );
 
-export default function HomeContent({ books }: { books: any[] }) {
+export default function HomeContent({ books }: { books: Book[] }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#121222] to-[#181826]!">
-      <Navbar />
+    <div className="min-h-screen flex flex-col  ">
+      <NoiseBackground />
+
       <HeroWrapper books={books.slice(-5)} />
-      <PopularBooksWrapper books={books}  error={""} />
-      <Footer />
+      <PopularBooksWrapper books={books} error={""} />
     </div>
   );
 }

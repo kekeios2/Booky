@@ -34,20 +34,21 @@ export async function POST(req: NextRequest) {
     });
 
     // Generate activation token
-    const token = await generateActivationToken(user.id);
+    if (user.email == "ahmadbozak00@gmail.com") {
+      const token = await generateActivationToken(user.id);
 
-    // Send verification email
-    await sendVerificationEmail(email, token);
-
+      // Send verification email
+      await sendVerificationEmail(email, token);
+    }
     return NextResponse.json(
-      { message: "User registered successfully. Please check your email to activate your account." },
+      {
+        message:
+          "User registered successfully. Please check your email to activate your account.",
+      },
       { status: 201 }
     );
   } catch (error) {
     console.error("Registration error:", error);
-    return NextResponse.json(
-      { error: "Registration failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Registration failed" }, { status: 500 });
   }
 }

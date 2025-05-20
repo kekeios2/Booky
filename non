@@ -1,67 +1,28 @@
+> test@0.1.0 build
+> set ANALYZE=true && next build --no-lint
+
+ ⚠ Linting is disabled.
+   ▲ Next.js 15.3.2
+   - Environments: .env
+
    Creating an optimized production build ...
  ✓ Compiled successfully in 10.0s
- ✓ Checking validity of types    
- ✓ Collecting page data    
- ✓ Generating static pages (25/25)
- ✓ Collecting build traces
- ✓ Finalizing page optimization
-
-Route (app)                                 Size  First Load JS
-┌ ○ /                                    1.69 kB         113 kB
-├ ○ /_not-found                            990 B         103 kB
-├ ƒ /admin                                104 kB         206 kB
-├ ƒ /admin/books                         2.38 kB         116 kB
-├ ƒ /admin/books/edit/[id]               4.35 kB         133 kB
-├ ƒ /admin/books/new                     4.08 kB         133 kB
-├ ƒ /admin/borrow                        2.19 kB         114 kB
-├ ƒ /admin/Users                         2.32 kB         122 kB
-├ ƒ /admin/Users/new                     1.02 kB         106 kB
-├ ƒ /api/admin/books                       180 B         102 kB
-├ ƒ /api/admin/books/[id]                  180 B         102 kB
-├ ƒ /api/admin/borrow                      180 B         102 kB
-├ ƒ /api/admin/users                       180 B         102 kB
-├ ƒ /api/auth/[...nextauth]                180 B         102 kB
-├ ƒ /api/auth/register                     180 B         102 kB
-├ ƒ /api/books                             180 B         102 kB
-├ ƒ /api/books/[id]                        180 B         102 kB
-├ ƒ /api/borrow                            180 B         102 kB
-├ ƒ /api/borrow/[bookId]                   180 B         102 kB
-├ ƒ /api/borrow/approve                    180 B         102 kB
-├ ƒ /api/recommendion                      180 B         102 kB
-├ ƒ /api/search                            180 B         102 kB
-├ ƒ /api/user-borrowed-books               180 B         102 kB
-├ ƒ /books/[id]                          4.25 kB         125 kB
-├ ○ /login                               2.65 kB         137 kB
-├ ƒ /profile                             7.99 kB         146 kB
-├ ○ /register                            5.69 kB         148 kB
-└ ○ /search                              3.02 kB         114 kB
-+ First Load JS shared by all             102 kB
-  ├ chunks/1684-c6a6db48eb882f56.js      46.4 kB
-  └ other shared chunks (total)          2.46 kB
-
-
-○  (Static)   prerendered as static content
-ƒ  (Dynamic)  server-rendered on demand
-; =================================================================
-
-  Creating an optimized production build ...
- ✓ Compiled successfully in 13.0s
- ✓ Checking validity of types    
+ ✓ Checking validity of types
  ✓ Collecting page data    
  ✓ Generating static pages (34/34)
  ✓ Collecting build traces    
  ✓ Finalizing page optimization
 
 Route (app)                                 Size  First Load JS
-┌ ○ /                                     1.7 kB         113 kB
+┌ ○ /                                    6.58 kB         132 kB
 ├ ○ /_not-found                            208 B         102 kB
 ├ ƒ /admin                                104 kB         206 kB
 ├ ƒ /admin/books                         2.38 kB         116 kB
-├ ƒ /admin/books/edit/[id]               4.35 kB         133 kB
-├ ƒ /admin/books/new                      4.1 kB         133 kB
-├ ƒ /admin/borrow                        1.76 kB         114 kB
-├ ƒ /admin/Users                         2.32 kB         122 kB
-├ ƒ /admin/Users/new                     1.02 kB         106 kB
+├ ƒ /admin/books/edit/[id]               4.87 kB         133 kB
+├ ƒ /admin/books/new                     4.61 kB         133 kB
+├ ƒ /admin/borrow                        1.84 kB         115 kB
+├ ƒ /admin/Users                         2.67 kB         122 kB
+├ ƒ /admin/Users/new                     1.24 kB         106 kB
 ├ ƒ /api/admin/books                       208 B         102 kB
 ├ ƒ /api/admin/books/[id]                  208 B         102 kB
 ├ ƒ /api/admin/borrow                      208 B         102 kB
@@ -84,17 +45,17 @@ Route (app)                                 Size  First Load JS
 ├ ƒ /api/search                            208 B         102 kB
 ├ ƒ /api/send-email                        208 B         102 kB
 ├ ƒ /api/user-borrowed-books               208 B         102 kB
-├ ƒ /books/[id]                          4.26 kB         125 kB
+├ ƒ /books/[id]                          6.88 kB         135 kB
 ├ ○ /checkEmail                          2.39 kB         105 kB
-├ ○ /login                               2.77 kB         137 kB
-├ ƒ /profile                             9.05 kB         148 kB
-├ ○ /register                             5.7 kB         148 kB
-├ ○ /search                              3.02 kB         114 kB
+├ ○ /login                                2.2 kB         110 kB
+├ ƒ /profile                             10.2 kB         150 kB
+├ ○ /register                            20.2 kB         148 kB
+├ ○ /search                              7.49 kB         147 kB
 └ ○ /verify                              1.72 kB         104 kB
 + First Load JS shared by all             102 kB
   ├ chunks/1684-2c9567da4b344cdd.js      46.4 kB
   ├ chunks/4bd1b696-4519186cf632f502.js  53.2 kB
-  └ other shared chunks (total)          2.43 kB
+  └ other shared chunks (total)           2.4 kB
 
 
 ○  (Static)   prerendered as static content

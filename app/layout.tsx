@@ -1,7 +1,5 @@
 // app/layout.tsx
-import "./globals.css";
-import { Toaster } from "sonner";
-import { AuthProvider } from "@/providers/NextAuthProviders";
+import "@/app/globals.css";
 
 export default function RootLayout({
   children,
@@ -10,12 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body id="MainBody" className=" text-white">
-        <AuthProvider>
-          <Toaster position="top-right" />
-          {children}
-        </AuthProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import PopularBooksCarousel from "./PopularBooksCarousel";
+import { Book } from "@/types/types";
 
 interface PopularBooksWrapperProps {
-  books: any[];
+  books: Book[];
   error: string;
 }
 
@@ -14,7 +14,6 @@ const PopularBooksWrapper = ({ books, error }: PopularBooksWrapperProps) => {
     triggerOnce: true,
     threshold: 0.2,
   });
-
 
   return (
     <section ref={ref} className="px-4 py-12 relative group min-h-[300px]">

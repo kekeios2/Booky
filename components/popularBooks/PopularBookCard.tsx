@@ -1,20 +1,14 @@
-"use client";
-
 import Link from "next/link";
 import BookCover from "@/components/BookCover";
+import { Book } from "@/types/types";
 
 interface PopularBookCardProps {
-  book: {
-    id: string;
-    image: string;
-    coverColor?: string;
-    title: string;
-    author: string;
-    category: string;
-  };
+  book: Book;
 }
 
 const PopularBookCard = ({ book }: PopularBookCardProps) => {
+  const firstName = book.author?.split(" ")?.[0] || "Unknown";
+
   return (
     <Link href={`/books/${book.id}`} passHref>
       <div className="flex flex-col items-center cursor-pointer">
@@ -28,7 +22,7 @@ const PopularBookCard = ({ book }: PopularBookCardProps) => {
         </div>
         <div className="w-full mt-2 text-center">
           <h3 className="text-white font-medium text-sm truncate">
-            {book.title} - By {book.author.split(" ")[0]}
+            {book.title} - By {firstName}
           </h3>
           <p className="text-gray-400 text-xs mt-1 italic">{book.category}</p>
         </div>

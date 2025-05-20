@@ -5,8 +5,6 @@ const Footer = () => {
   return (
     <footer className="bg-transparent text-white pt-6 pb-6 border-t border-gray-900 min-h-[100px]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 mb-3 min-h-[40px]"></div>
-
         <div className="pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center min-h-[60px]">
           <Link href="/">
             <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
