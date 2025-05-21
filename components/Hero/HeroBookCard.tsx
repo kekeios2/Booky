@@ -19,18 +19,18 @@ const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
 
   useEffect(() => {
     if (!session) return; // ⛔ Not signed in → skip fetch
-  
+
     const checkIfBorrowed = async () => {
       try {
         const res = await fetch(`/api/borrow/check?bookId=${book.id}`, {
           credentials: "include",
         });
-  
+
         if (!res.ok) {
           console.error("Failed to check borrow status:", res.status);
           return;
         }
-  
+
         const data = await res.json();
         if (data?.borrowed) {
           setIsBorrowed(true);
@@ -39,15 +39,15 @@ const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
         console.error("Error checking borrow status:", error);
       }
     };
-  
+
     checkIfBorrowed();
   }, [book.id, session]);
-  
+
   return (
     <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-16 w-full max-w-screen-xl mt-10">
       {/* Book Cover with reflection */}
       <div className="w-full lg:w-2/5 relative  md:h-96 lg:h-[28rem] flex justify-center lg:justify-start">
-      <BookCover
+        <BookCover
           coverImage={book.image}
           coverColor={book.coverColor}
           variant={isMobile ? "regular" : "wide"}
@@ -62,7 +62,7 @@ const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
           priority
         />
       </div>
-      
+
       {/* Book Info */}
       <div className="w-full lg:w-3/5 space-y-5 text-center lg:text-left">
         <div className="flex flex-wrap justify-center lg:justify-start items-center gap-3 text-sm m-0">
@@ -83,11 +83,11 @@ const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
             <span className="text-gray-300 ml-1">{book.rating}/5</span>
           </div>
         </div>
-        
+
         <h1 className="text-white text-4xl md:text-5xl font-bold tracking-tight leading-snug">
           {book.title}
         </h1>
-        
+
         <p className="text-gray-400 text-sm">
           By
           <span className="text-[#c9af90] font-medium hover:underline mx-1.5">
@@ -98,19 +98,17 @@ const HeroBookCard = ({ book, isMobile }: HeroBookCardProps) => {
             {book.category}
           </span>
         </p>
-        
-        <p className="text-gray-300 text-base max-w-2xl mx-auto lg:mx-0 ">
+        <p className="text-gray-300 text-base max-w-2xl mx-auto lg:mx-0 line-clamp-3 sm:line-clamp-3 md:line-clamp-3">
           {book.description}
         </p>
-        
+
         <div className="bg-[#1c2540]/60 border border-gray-700/30 rounded-lg p-6">
           <h3 className="text-white text-lg font-medium mb-3">Summary:</h3>
-          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-            {book.summary}
+          <p className="text-gray-300 text-base max-w-2xl mx-auto lg:mx-0 line-clamp-3 sm:line-clamp-3 md:line-clamp-3">
+          {book.summary}
           </p>
         </div>
         <div className="flex justify-center lg:justify-start gap-4 pt-2">
-          
           <BorrowButton bookId={book.id} isBorrowed={isBorrowed} />
           <SaveButton bookId={book.id} />
         </div>

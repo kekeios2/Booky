@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
-import { LuTrash2 ,LuUserPen  } from "react-icons/lu";
+import { LuTrash2, LuUserPen } from "react-icons/lu";
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -27,18 +27,24 @@ export function BookTable() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
         const response = await fetch("/api/admin/books");
-        if (!response.ok) throw new Error("Failed to fetch books");
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Failed to fetch books (${response.status})`);
+        }
+        
         const data = await response.json();
         setBooks(data.books);
       } catch (err: any) {
         setError(err.message || "Error fetching books");
-        toast.error("Failed to load books");
+        toast.error(err.message || "Failed to load books");
       } finally {
         setLoading(false);
       }
@@ -51,15 +57,23 @@ export function BookTable() {
     if (!confirm("Are you sure you want to delete this book?")) return;
 
     try {
-      const response = await fetch(`/api/admin/books?id=${id}`, {
+      setDeletingId(id);
+      const response = await fetch(`/api/admin/books/${id}`, {
         method: "DELETE",
       });
-      if (!response.ok) throw new Error("Failed to delete book");
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to delete book (${response.status})`);
+      }
+      
       setBooks((prev) => prev.filter((book) => book.id !== id));
       toast.success("Book deleted successfully");
-    } catch (err) {
-      toast.error("Failed to delete book");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to delete book");
       console.error("Error:", err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -113,11 +127,10 @@ export function BookTable() {
               <td className="p-2">
                 {book.image ? (
                   <BookCover
-                  coverColor={book.coverColor}
-                  coverImage={book.image}
-                  className="w-10! h-14!"
-                />
-                
+                    coverColor={book.coverColor}
+                    coverImage={book.image}
+                    className="w-10! h-14!"
+                  />
                 ) : (
                   <span className="text-gray-400 italic">No image</span>
                 )}
@@ -147,7 +160,10 @@ export function BookTable() {
               <td className="p-2 flex gap-1">
                 <button
                   onClick={() => handleDelete(book.id)}
-                  className="text-gray-500 hover:text-red-700 p-1 rounded hover:bg-gray-100"
+                  disabled={deletingId === book.id}
+                  className={`text-gray-500 hover:text-red-700 p-1 rounded hover:bg-gray-100 ${
+                    deletingId === book.id ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   title="Delete book"
                 >
                   <LuTrash2 size={18} />

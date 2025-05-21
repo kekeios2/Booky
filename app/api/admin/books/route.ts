@@ -114,25 +114,23 @@ export async function POST(req: Request) {
 }
 
 // ✅ [DELETE] Delete book
-export async function DELETE(request: Request) {
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || session.user?.role !== "Admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "User ID is required" },
-        { status: 400 }
-      );
+    const id = Number(params.id);
+    if (isNaN(id)) {
+      return NextResponse.json({ error: "Invalid book ID" }, { status: 400 });
     }
 
     await prisma.book.delete({
-      where: { id: Number(id) },
+      where: { id },
     });
 
     return NextResponse.json(
